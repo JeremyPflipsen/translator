@@ -53,7 +53,7 @@ lang_map = {
 # --------------- Helpers that build all of the responses ----------------------
 
 def get_slots(intent_request):
-    return intent_request['currentIntent']['slots']
+    return intent_request['sessionState']['intent']['slots']
 
 def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message):
     logger.debug('Elicit Slot function intentName: {}'.format(intent_name))
@@ -164,8 +164,8 @@ def translatePhrase(intent_request):
     Uses Amazon Translate to translate a phrase from a source -> destination phrase and provide to customer
     """
 
-    source_lang = get_slots(intent_request)['source_lang'].lower()
-    target_lang = get_slots(intent_request)['target_lang'].lower()
+    source_lang = get_slots(intent_request)['source_lang']['value']['interpretedValue'].lower()
+    target_lang = get_slots(intent_request)['target_lang']['value']['interpretedValue'].lower()
     phrase = get_slots(intent_request)['phrase']
     source = intent_request['invocationSource']
 
@@ -178,7 +178,7 @@ def translatePhrase(intent_request):
     logger.debug('inputTranscript={}'.format(intent_request['inputTranscript']))
     
     # Set session attrributes for the value of source and target languages
-    session_attributes = intent_request['sessionAttributes'] if intent_request['sessionAttributes'] is not None else {}
+    session_attributes = intent_request['sessionState']['sessionAttributes'] if intent_request['sessionState']['sessionAttributes'] is not None else {}
     
 
     if source == 'DialogCodeHook':
@@ -210,8 +210,8 @@ def translatePhrase(intent_request):
         valid_phrase = validate_phrase(phrase, source_lang, target_lang)
         if not valid_phrase['isValid']:
             slots[valid_phrase['violatedSlot']] = None
-            return elicit_slot(intent_request['sessionAttributes'],
-                               intent_request['currentIntent']['name'],
+            return elicit_slot(intent_request['sessionState']['sessionAttributes'],
+                               intent_request['sessionState']['intent']['name'],
                                slots,
                                valid_phrase['violatedSlot'],
                                valid_phrase['message'])
@@ -224,7 +224,7 @@ def translatePhrase(intent_request):
             logger.debug('Translated Text is={}'.format(translatedText))
             print ("Translation is: ", translatedText) 
             
-            intent_request['currentIntent']['phrase'] = None
+            intent_request['sessionState']['intent']['phrase'] = None
             logger.debug('Set phrase slot to None and returning elicit slot with translation')
             logger.debug('Phrase={}'.format(intent_request['currentIntent']['phrase']))
             
@@ -265,9 +265,9 @@ def dispatch(intent_request):
     Called when the user specifies an intent for this bot.
     """
 
-    logger.debug('dispatch userId={}, intentName={}'.format(intent_request['userId'], intent_request['currentIntent']['name']))
+    # logger.debug('dispatch userId={}, intentName={}'.format(intent_request['userId'], intent_request['currentIntent']['name']))
 
-    intent_name = intent_request['currentIntent']['name']
+    intent_name = intent_request['sessionState']['intent']['name']
 
     # Dispatch to your bot's intent handlers
     if intent_name == 'translate_phrase':
