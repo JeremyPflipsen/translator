@@ -166,7 +166,7 @@ def translatePhrase(intent_request):
 
     source_lang = get_slots(intent_request)['source_lang']['value']['interpretedValue'].lower()
     target_lang = get_slots(intent_request)['target_lang']['value']['interpretedValue'].lower()
-    phrase = get_slots(intent_request)['phrase']
+    phrase = get_slots(intent_request)['phrase']['value']['interpretedValue']
     source = intent_request['invocationSource']
 
     logger.debug('Intent Request={}'.format(intent_request))
@@ -188,8 +188,8 @@ def translatePhrase(intent_request):
         validation_result = validate_languages(source_lang, target_lang) #check languages are valid and supported
         if not validation_result['isValid']:
             slots[validation_result['violatedSlot']] = None
-            return elicit_slot(intent_request['sessionAttributes'],
-                               intent_request['currentIntent']['name'],
+            return elicit_slot(intent_request['sessionState']['sessionAttributes'],
+                               intent_request['sessionState']['intent']['name'],
                                slots,
                                validation_result['violatedSlot'],
                                validation_result['message'])
@@ -205,7 +205,7 @@ def translatePhrase(intent_request):
         session_attributes['source_lang'] = sourceISO
         session_attributes['target_lang'] = targetISO
 
-        phrase = get_slots(intent_request)['phrase']
+        phrase = get_slots(intent_request)['phrase']['value']['interpretedValue']
         logger.debug('Phrase in dialogCodeHook code={}'.format(phrase))
         valid_phrase = validate_phrase(phrase, source_lang, target_lang)
         if not valid_phrase['isValid']:
@@ -226,10 +226,10 @@ def translatePhrase(intent_request):
             
             intent_request['sessionState']['intent']['phrase'] = None
             logger.debug('Set phrase slot to None and returning elicit slot with translation')
-            logger.debug('Phrase={}'.format(intent_request['currentIntent']['phrase']))
+            logger.debug('Phrase={}'.format(intent_request['sessionState']['intent']['phrase']))
             
-            return elicit_slot(intent_request['sessionAttributes'],
-                               intent_request['currentIntent']['name'],
+            return elicit_slot(intent_request['sessionState']['sessionAttributes'],
+                               intent_request['sessionState']['intent']['name'],
                                slots,
                                'phrase',
                                {
@@ -237,7 +237,7 @@ def translatePhrase(intent_request):
                                'content': format(translatedText)
                                })
         logger.debug('Translated Phrase')
-        return delegate(session_attributes, intent_request['currentIntent']['slots'])
+        return delegate(session_attributes, intent_request['sessionState']['intent']['slots'])
     
     # Convert phrase to translated text
     translation = try_ex(lambda: translate.translate_text(Text=phrase, SourceLanguageCode=sourceISO, TargetLanguageCode=targetISO))                                                                                                                                        
