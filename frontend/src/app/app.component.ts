@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MaterialModule } from './material/material.module';
 import { FormControl } from '@angular/forms';
+import { min } from 'rxjs';
 
 interface Language {
   value: string;
@@ -33,43 +34,32 @@ export class AppComponent {
   ];
 
   timeOfLastUserInput: Date = new Date();
-  minTimeBetweenCalls: number = 3000; //in milliseconds
+  waitTime: number = 500; //in milliseconds
   timeSinceLastUserInput: number = 0
   blockToTime: Date = new Date()
-  sufficientTimeHasPassed(): boolean {
-    let now: Date = new Date();
-    this.timeSinceLastUserInput = now.getTime() - this.timeOfLastUserInput.getTime();
-    return this.timeSinceLastUserInput > this.minTimeBetweenCalls
-  }
-
+  maxTimeBetweenApiCalls: number = 1000
+  timeOfLastApiCall: Date = new Date()
   onUserInput() {
-    // console.log("USERINPUT. now = ", new Date().getTime())
     //Wait some time between calls to save processing
-    let timeOfCurrentUserInput: Date = new Date()
-    let timeToWait: number = 0;
-    if (!this.sufficientTimeHasPassed()) {
-      timeToWait = this.minTimeBetweenCalls - this.timeSinceLastUserInput;
-    }
+    let now: Date = new Date();
 
-    // console.log("SETTIMEOUT timeToWait: ", timeToWait)
-    this.blockToTime = new Date(timeOfCurrentUserInput.getTime() + timeToWait)
-    this.timeOfLastUserInput = timeOfCurrentUserInput
-    // console.log("blockToTime:", this.blockToTime.getTime())
+    this.blockToTime = new Date(now.getTime() + this.waitTime)
 
     setTimeout(() => {
       this.callTranslateApi()
-    }, timeToWait);
+    }, this.waitTime);
   }
 
   callTranslateApi() {
-    if (new Date().getTime() < this.blockToTime.getTime()) {
-      // console.log("NOT ENOUGH TIME PASSED. now = ", new Date().getTime())
-      // console.log("TimeofLastUserInput: ", this.timeOfLastUserInput.getTime())
+    let now = new Date()
+    if (now.getTime() < this.blockToTime.getTime()
+      && now.getTime() - this.timeOfLastApiCall.getTime() < this.maxTimeBetweenApiCalls) {
       return
     }
 
     //do logic here
     console.log("API CALL. now = ", new Date().getTime())
+    this.timeOfLastApiCall = now
   }
 
 }
