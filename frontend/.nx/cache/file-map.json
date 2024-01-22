@@ -47,44 +47,12 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "src/app/app.component.html",
-        "hash": "10202954652940071109"
-      },
-      {
-        "file": "src/app/bodycolumn/bodycolumn.component.html",
-        "hash": "2908160648145427109"
-      },
-      {
-        "file": "src/app/toolbar/toolbar.component.html",
-        "hash": "13465225701626434286"
-      },
-      {
-        "file": "src/app/toolbar/toolbar.component.css",
-        "hash": "3826720446978861868"
-      },
-      {
-        "file": "src/app/bodycolumn/bodycolumn.component.spec.ts",
-        "hash": "14299309849115367322"
-      },
-      {
-        "file": "src/app/app.component.scss",
-        "hash": "8295803698910094837"
-      },
-      {
         "file": "src/app/app.component.ts",
-        "hash": "17382554130522197126"
+        "hash": "12150452800177896062"
       },
       {
-        "file": "src/app/bodycolumn/bodycolumn.component.ts",
-        "hash": "1579251851535027718"
-      },
-      {
-        "file": "src/app/bodycolumn/bodycolumn.component.css",
-        "hash": "4055606894390288348"
-      },
-      {
-        "file": "src/styles.scss",
-        "hash": "15013252981971930655"
+        "file": "src/app/app.component.html",
+        "hash": "9771198287548338479"
       }
     ],
     "projectFileMap": {
@@ -187,11 +155,11 @@
         },
         {
           "file": "src/app/app.component.html",
-          "hash": "6296118294226919980"
+          "hash": "8456834255225172945"
         },
         {
           "file": "src/app/app.component.scss",
-          "hash": "17209401263341642167"
+          "hash": "8295803698910094837"
         },
         {
           "file": "src/app/app.component.spec.ts",
@@ -202,7 +170,7 @@
         },
         {
           "file": "src/app/app.component.ts",
-          "hash": "13229518948784895469",
+          "hash": "11567959573447461257",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/router",
@@ -245,11 +213,11 @@
         },
         {
           "file": "src/app/toolbar/toolbar.component.css",
-          "hash": "14075013060718930513"
+          "hash": "3826720446978861868"
         },
         {
           "file": "src/app/toolbar/toolbar.component.html",
-          "hash": "18288537617102957225"
+          "hash": "13465225701626434286"
         },
         {
           "file": "src/app/toolbar/toolbar.component.spec.ts",
@@ -295,7 +263,7 @@
         },
         {
           "file": "src/styles.scss",
-          "hash": "1602517625906263710"
+          "hash": "15013252981971930655"
         },
         {
           "file": "tailwind.config.js",

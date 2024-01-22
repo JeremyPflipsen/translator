@@ -1,10 +1,10 @@
 <div class="background">
   <app-toolbar></app-toolbar>
-  <div class="flex">
+  <div class="flex justify-between">
     <div class="inline-block w-1/2 items-center flex flex-col">
       <div class="inline-block w-1/2 m-8">
         <mat-form-field>
-          <mat-select [(ngModel)]="selectedFirstLanguage" name="language" class="inline-block w-1/2 bg-transparent">
+          <mat-select [(ngModel)]="selectedFirstLanguage" name="language" class="inline-block w-1/2 bg-transparent" (selectionChange)="onUserInput()">
             @for (language of languages; track language) {
             <mat-option [value]="language.value">
               {{language.value}}
@@ -14,9 +14,8 @@
         </mat-form-field>
       </div>
 
-      <textarea class="p-8 box-content leading-10 text-zinc-800 italic font-serif font-semibold" cdkTextareaAutosize
+      <textarea class="p-8 box-content leading-10 text-zinc-800 italic font-serif font-semibold" [ngModel]="firstLanguageText" cdkTextareaAutosize (ngModelChange)="onUserInput()"
         cdkAutosizeMinRows="1">
-        {{firstLanguageText}}
       </textarea>
     </div>
     <div class="inline-block w-1/2 items-center flex flex-col">
