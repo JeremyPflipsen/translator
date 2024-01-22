@@ -1,0 +1,32 @@
+<div class="background">
+  <app-toolbar></app-toolbar>
+  <div class="body">
+    <div class="body-row">
+      <mat-select class="body-row-item align-right">
+        English
+      </mat-select>
+      <mat-select class="body-row-item">
+        Spanish
+      </mat-select>
+    </div>
+    <div class="body-row">
+      <textarea
+        class="body-row-item"
+        matInput
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="1"
+      >
+        {{firstLanguageText}}</textarea
+      >
+      <textarea
+        class="body-row-item"
+        matInput
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="1"
+        disabled
+      >
+      {{secondLanguageText}}</textarea
+      >
+    </div>
+  </div>
+</div>
