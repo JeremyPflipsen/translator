@@ -15,6 +15,7 @@
     "@angular/router": "^17.1.0",
     "@angular/ssr": "^17.1.0",
     "express": "^4.18.2",
+    "ng-autosize": "^1.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3",
@@ -29,6 +30,7 @@
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
+    "autoprefixer": "^10.4.17",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -36,6 +38,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "nx": "17.2.8",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
     "typescript": "~5.3.2"
   },
   "pathMappings": {},
@@ -43,36 +47,36 @@
   "fileMap": {
     "nonProjectFiles": [
       {
+        "file": "src/app/bodycolumn/bodycolumn.component.ts",
+        "hash": "3398275748086696865"
+      },
+      {
+        "file": "src/app/bodycolumn/bodycolumn.component.css",
+        "hash": "4055606894390288348"
+      },
+      {
+        "file": "src/styles.scss",
+        "hash": "15013252981971930655"
+      },
+      {
+        "file": "src/app/bodycolumn/bodycolumn.component.spec.ts",
+        "hash": "14299309849115367322"
+      },
+      {
+        "file": "src/app/bodycolumn/bodycolumn.component.html",
+        "hash": "12957625629681024170"
+      },
+      {
         "file": "src/app/app.component.ts",
-        "hash": "6571467945982935688"
-      },
-      {
-        "file": "src/app/toolbar/toolbar.component.ts",
-        "hash": "14026838166992753933"
-      },
-      {
-        "file": "src/app/material/material.module.ts",
-        "hash": "8306034205835495369"
+        "hash": "18374725494905995133"
       },
       {
         "file": "src/app/app.component.scss",
-        "hash": "3426569596136134177"
-      },
-      {
-        "file": "src/app/toolbar/toolbar.component.html",
-        "hash": "18288537617102957225"
-      },
-      {
-        "file": "src/app/toolbar/toolbar.component.spec.ts",
-        "hash": "17211605225104766369"
+        "hash": "8295803698910094837"
       },
       {
         "file": "src/app/app.component.html",
-        "hash": "15938947108319396727"
-      },
-      {
-        "file": "src/app/toolbar/toolbar.component.css",
-        "hash": "14075013060718930513"
+        "hash": "9800823996948356138"
       }
     ],
     "projectFileMap": {
@@ -107,11 +111,11 @@
         },
         {
           "file": "package-lock.json",
-          "hash": "17125397124449396968"
+          "hash": "11294205461840338624"
         },
         {
           "file": "package.json",
-          "hash": "4759770773376619420",
+          "hash": "8383668654909850684",
           "deps": [
             "npm:@angular/animations",
             "npm:@angular/cdk",
@@ -126,6 +130,7 @@
             "npm:@angular/router",
             "npm:@angular/ssr",
             "npm:express",
+            "npm:ng-autosize",
             "npm:rxjs",
             "npm:tslib",
             "npm:zone.js",
@@ -140,6 +145,7 @@
             "npm:@types/express",
             "npm:@types/jasmine",
             "npm:@types/node",
+            "npm:autoprefixer",
             "npm:jasmine-core",
             "npm:karma",
             "npm:karma-chrome-launcher",
@@ -147,8 +153,14 @@
             "npm:karma-jasmine",
             "npm:karma-jasmine-html-reporter",
             "npm:nx",
+            "npm:postcss",
+            "npm:tailwindcss",
             "npm:typescript"
           ]
+        },
+        {
+          "file": "postcss.config.js",
+          "hash": "1579725330904862112"
         },
         {
           "file": "project.json",
@@ -167,11 +179,11 @@
         },
         {
           "file": "src/app/app.component.html",
-          "hash": "11358065693346708359"
+          "hash": "6296118294226919980"
         },
         {
           "file": "src/app/app.component.scss",
-          "hash": "3244421341483603138"
+          "hash": "17209401263341642167"
         },
         {
           "file": "src/app/app.component.spec.ts",
@@ -182,10 +194,11 @@
         },
         {
           "file": "src/app/app.component.ts",
-          "hash": "5165081381521059569",
+          "hash": "13229518948784895469",
           "deps": [
             "npm:@angular/core",
-            "npm:@angular/router"
+            "npm:@angular/router",
+            "npm:@angular/forms"
           ]
         },
         {
@@ -210,6 +223,40 @@
           "hash": "809736233805555256",
           "deps": [
             "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "src/app/material/material.module.ts",
+          "hash": "8630682868830622297",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/material",
+            "npm:@angular/cdk",
+            "npm:@angular/forms"
+          ]
+        },
+        {
+          "file": "src/app/toolbar/toolbar.component.css",
+          "hash": "14075013060718930513"
+        },
+        {
+          "file": "src/app/toolbar/toolbar.component.html",
+          "hash": "18288537617102957225"
+        },
+        {
+          "file": "src/app/toolbar/toolbar.component.spec.ts",
+          "hash": "17211605225104766369",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "src/app/toolbar/toolbar.component.ts",
+          "hash": "14272952600141423027",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common",
+            "npm:@angular/material"
           ]
         },
         {
@@ -240,7 +287,11 @@
         },
         {
           "file": "src/styles.scss",
-          "hash": "1619517860747131107"
+          "hash": "1602517625906263710"
+        },
+        {
+          "file": "tailwind.config.js",
+          "hash": "7601031578553540284"
         },
         {
           "file": "tsconfig.app.json",
@@ -248,7 +299,7 @@
         },
         {
           "file": "tsconfig.json",
-          "hash": "3343339550490537441"
+          "hash": "425957436105904411"
         },
         {
           "file": "tsconfig.spec.json",
