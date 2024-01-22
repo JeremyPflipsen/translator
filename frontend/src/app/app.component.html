@@ -6,27 +6,36 @@
         <mat-form-field>
           <mat-select [(ngModel)]="selectedFirstLanguage" name="language" class="inline-block w-1/2 bg-transparent">
             @for (language of languages; track language) {
-            <mat-option [value]="language.value">{{
-              language.value
-              }}</mat-option>
+            <mat-option [value]="language.value">
+              {{language.value}}
+            </mat-option>
             }
           </mat-select>
         </mat-form-field>
       </div>
 
-      <textarea class="p-8 box-content leading-10 text-zinc-800 italic font-serif font-semibold" cdkTextareaAutosize cdkAutosizeMinRows="1">
-        {{firstLanguageText }}
+      <textarea class="p-8 box-content leading-10 text-zinc-800 italic font-serif font-semibold" cdkTextareaAutosize
+        cdkAutosizeMinRows="1">
+        {{firstLanguageText}}
       </textarea>
     </div>
-    <div class="inline-block w-1/2  ">
-      <mat-select [(ngModel)]="selectedSecondLanguage" name="language" class="inline-block">
-        @for (language of languages; track language) {
-        <mat-option [value]="language.value">{{ language.value }}</mat-option>
-        }
-      </mat-select>
-      <textarea class="inline-block p-8" cdkTextareaAutosize cdkAutosizeMinRows="1" disabled>
-      {{ secondLanguageText }}
-    </textarea>
+    <div class="inline-block w-1/2 items-center flex flex-col">
+      <div class="inline-block w-1/2 m-8">
+        <mat-form-field>
+          <mat-select [(ngModel)]="selectedSecondLanguage" name="language" class="inline-block w-1/2 bg-transparent">
+            @for (language of languages; track language) {
+            <mat-option [value]="language.value">
+              {{language.value}}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <textarea class="p-8 box-content leading-10 text-zinc-800 italic font-serif font-semibold" cdkTextareaAutosize
+        cdkAutosizeMinRows="1">
+        {{secondLanguageText}}
+      </textarea>
     </div>
   </div>
 </div>

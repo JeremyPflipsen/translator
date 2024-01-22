@@ -9,11 +9,11 @@ interface Language {
 }
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
-  imports: [RouterOutlet, ToolbarComponent, MaterialModule],
+    selector: 'app-root',
+    standalone: true,
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss',
+    imports: [RouterOutlet, ToolbarComponent, MaterialModule]
 })
 export class AppComponent {
   title = 'frontend';

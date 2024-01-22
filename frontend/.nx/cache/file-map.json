@@ -47,8 +47,36 @@
   "fileMap": {
     "nonProjectFiles": [
       {
+        "file": "src/app/app.component.html",
+        "hash": "10202954652940071109"
+      },
+      {
+        "file": "src/app/bodycolumn/bodycolumn.component.html",
+        "hash": "2908160648145427109"
+      },
+      {
+        "file": "src/app/toolbar/toolbar.component.html",
+        "hash": "13465225701626434286"
+      },
+      {
+        "file": "src/app/toolbar/toolbar.component.css",
+        "hash": "3826720446978861868"
+      },
+      {
+        "file": "src/app/bodycolumn/bodycolumn.component.spec.ts",
+        "hash": "14299309849115367322"
+      },
+      {
+        "file": "src/app/app.component.scss",
+        "hash": "8295803698910094837"
+      },
+      {
+        "file": "src/app/app.component.ts",
+        "hash": "17382554130522197126"
+      },
+      {
         "file": "src/app/bodycolumn/bodycolumn.component.ts",
-        "hash": "3398275748086696865"
+        "hash": "1579251851535027718"
       },
       {
         "file": "src/app/bodycolumn/bodycolumn.component.css",
@@ -57,26 +85,6 @@
       {
         "file": "src/styles.scss",
         "hash": "15013252981971930655"
-      },
-      {
-        "file": "src/app/bodycolumn/bodycolumn.component.spec.ts",
-        "hash": "14299309849115367322"
-      },
-      {
-        "file": "src/app/bodycolumn/bodycolumn.component.html",
-        "hash": "12957625629681024170"
-      },
-      {
-        "file": "src/app/app.component.ts",
-        "hash": "18374725494905995133"
-      },
-      {
-        "file": "src/app/app.component.scss",
-        "hash": "8295803698910094837"
-      },
-      {
-        "file": "src/app/app.component.html",
-        "hash": "9800823996948356138"
       }
     ],
     "projectFileMap": {
