@@ -14,7 +14,7 @@
         </mat-form-field>
       </div>
 
-      <textarea class="p-8 box-content leading-10 text-zinc-800 italic font-serif font-semibold" [ngModel]="firstLanguageText" cdkTextareaAutosize (ngModelChange)="onUserInput()"
+      <textarea class="p-8 box-content leading-10 text-zinc-800 italic font-serif font-semibold" [(ngModel)]="firstLanguageText" cdkTextareaAutosize (ngModelChange)="onUserInput()"
         cdkAutosizeMinRows="1">
       </textarea>
     </div>
@@ -31,9 +31,8 @@
         </mat-form-field>
       </div>
 
-      <textarea class="p-8 box-content leading-10 text-zinc-800 italic font-serif font-semibold" cdkTextareaAutosize
+      <textarea disabled class="p-8 box-content leading-10 text-zinc-800 italic font-serif font-semibold" cdkTextareaAutosize  [(ngModel)]="secondLanguageText"
         cdkAutosizeMinRows="1">
-        {{secondLanguageText}}
       </textarea>
     </div>
   </div>

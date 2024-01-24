@@ -3,7 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MaterialModule } from './material/material.module';
 import { FormControl } from '@angular/forms';
-import { min } from 'rxjs';
+import { first, min } from 'rxjs';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 interface Language {
   value: string;
@@ -14,10 +15,13 @@ interface Language {
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [RouterOutlet, ToolbarComponent, MaterialModule],
+  imports: [RouterOutlet, ToolbarComponent, MaterialModule, HttpClientModule],
 })
 export class AppComponent {
+  constructor(private http: HttpClient) { }
+
   title = 'frontend';
+
   firstLanguageText: string =
     'To dream the impossible dream, that is my quest.';
   secondLanguageText: string =
@@ -51,14 +55,24 @@ export class AppComponent {
   }
 
   callTranslateApi() {
-    let now = new Date()
+    const now = new Date()
     if (now.getTime() < this.blockToTime.getTime()
       && now.getTime() - this.timeOfLastApiCall.getTime() < this.maxTimeBetweenApiCalls) {
       return
     }
 
     //do logic here
-    console.log("API CALL. now = ", new Date().getTime())
+    const apiBaseUrl: string = "https://d2i8v3z9i5u64m.cloudfront.net"
+    const params: string = "?fromLanguage=" + this.selectedFirstLanguage
+                            + "&toLanguage=" + this.selectedSecondLanguage 
+                            + "&textToTranslate=" + encodeURIComponent(this.firstLanguageText)
+    const fullUrl = apiBaseUrl + params
+    console.log("Calling translate API at " + fullUrl)
+    this.http.get(fullUrl).pipe().subscribe(data => {
+      console.log("data")
+      console.log(data)
+      this.secondLanguageText = data.toString()
+    })
     this.timeOfLastApiCall = now
   }
 

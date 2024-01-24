@@ -48,11 +48,11 @@
     "nonProjectFiles": [
       {
         "file": "src/app/app.component.ts",
-        "hash": "17282211224751389439"
+        "hash": "8019368551046650309"
       },
       {
         "file": "src/app/app.component.html",
-        "hash": "9771198287548338479"
+        "hash": "3486909943824402445"
       }
     ],
     "projectFileMap": {
