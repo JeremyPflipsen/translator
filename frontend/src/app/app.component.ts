@@ -75,4 +75,15 @@ export class AppComponent {
     this.timeOfLastApiCall = now
   }
 
+  swap() {
+    console.log("SWAP")
+    const tempLanguageText = this.firstLanguageText
+    this.firstLanguageText = this.secondLanguageText
+    this.secondLanguageText = tempLanguageText
+
+    const tempSelectedLanguage = this.selectedFirstLanguage
+    this.selectedFirstLanguage = this.selectedSecondLanguage
+    this.selectedSecondLanguage = tempSelectedLanguage
+  }
+
 }
