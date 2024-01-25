@@ -36,6 +36,13 @@ export class AppComponent {
     { value: 'Spanish' },
     { value: 'French' },
     { value: 'Japanese' },
+    { value: 'Arabic' },
+    { value: 'Simplified Chinese' },
+    { value: 'Traditional Chinese' },
+    { value: 'Czech' },
+    { value: 'German' },
+    { value: 'Portuguese' },
+    { value: 'Turkish' },
   ];
 
   maxTimeBetweenApiCalls: number = 700 //in milliseconds

@@ -30,5 +30,8 @@ textarea {
 
   background: transparent;
 
-  font-size: 3rem;
+  font-size: 5vmin;
+  line-height: 5vmin;
+
+  /* @extend .text-center; */
 }

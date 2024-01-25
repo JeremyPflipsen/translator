@@ -12,7 +12,7 @@ translateApi = boto3.client("translate")
 lang_map = {
     "Arabic": "ar",
     "Simplified Chinese": "zh",
-    "Ttraditional Chinese": "zh-TW",
+    "Traditional Chinese": "zh-TW",
     "Czech": "cs",
     "English": "en",
     "French": "fr",
