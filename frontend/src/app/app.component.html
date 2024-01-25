@@ -1,7 +1,7 @@
 <div class="background">
   <app-toolbar></app-toolbar>
   <div class="flex justify-between">
-    <div class="inline-block w-1/2 items-center flex flex-col">
+    <div class="inline-block w-1/2 flex flex-col">
       <div class="inline-block w-1/2 m-8">
         <mat-form-field>
           <mat-select [(ngModel)]="selectedFirstLanguage" name="language" class="inline-block w-1/2 bg-transparent" (selectionChange)="onUserInput()">
@@ -21,7 +21,7 @@
     <div class="inline-block w-1/2 items-center flex flex-col">
       <div class="inline-block w-1/2 m-8">
         <mat-form-field>
-          <mat-select [(ngModel)]="selectedSecondLanguage" name="language" class="inline-block w-1/2 bg-transparent">
+          <mat-select [(ngModel)]="selectedSecondLanguage" name="language" class="inline-block w-1/2 bg-transparent" (selectionChange)="onUserInput()">
             @for (language of languages; track language) {
             <mat-option [value]="language.value">
               {{language.value}}

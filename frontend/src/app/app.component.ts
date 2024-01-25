@@ -18,14 +18,15 @@ interface Language {
   imports: [RouterOutlet, ToolbarComponent, MaterialModule, HttpClientModule],
 })
 export class AppComponent {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   title = 'frontend';
 
   firstLanguageText: string =
     'To dream the impossible dream, that is my quest.';
   secondLanguageText: string =
-    'El soñar... el sueño imposible, Ésta es mi búsqueda.';
+    'Soñar el sueño imposible, esa es mi búsqueda.';
 
   selectedFirstLanguage: string = 'English';
   selectedSecondLanguage: string = 'Spanish';
@@ -37,35 +38,26 @@ export class AppComponent {
     { value: 'Japanese' },
   ];
 
-  timeOfLastUserInput: Date = new Date();
-  waitTime: number = 500; //in milliseconds
-  timeSinceLastUserInput: number = 0
-  blockToTime: Date = new Date()
-  maxTimeBetweenApiCalls: number = 1000
+  maxTimeBetweenApiCalls: number = 700 //in milliseconds
   timeOfLastApiCall: Date = new Date()
   onUserInput() {
-    //Wait some time between calls to save processing
-    let now: Date = new Date();
-
-    this.blockToTime = new Date(now.getTime() + this.waitTime)
-
+    //Wait some time between calls to save processing and reduce motion
     setTimeout(() => {
       this.callTranslateApi()
-    }, this.waitTime);
+    }, this.maxTimeBetweenApiCalls);
   }
 
   callTranslateApi() {
     const now = new Date()
-    if (now.getTime() < this.blockToTime.getTime()
-      && now.getTime() - this.timeOfLastApiCall.getTime() < this.maxTimeBetweenApiCalls) {
+    if (now.getTime() - this.timeOfLastApiCall.getTime() < this.maxTimeBetweenApiCalls) {
       return
     }
 
     //do logic here
     const apiBaseUrl: string = "https://d2i8v3z9i5u64m.cloudfront.net"
     const params: string = "?fromLanguage=" + this.selectedFirstLanguage
-                            + "&toLanguage=" + this.selectedSecondLanguage 
-                            + "&textToTranslate=" + encodeURIComponent(this.firstLanguageText)
+      + "&toLanguage=" + this.selectedSecondLanguage
+      + "&textToTranslate=" + encodeURIComponent(this.firstLanguageText)
     const fullUrl = apiBaseUrl + params
     console.log("Calling translate API at " + fullUrl)
     this.http.get(fullUrl).pipe().subscribe(data => {
