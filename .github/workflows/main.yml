@@ -51,14 +51,14 @@ jobs:
         node-version: 14
 
     - name: Install dependencies
-      working-directory: /frontend
+      working-directory: ./frontend
       run: npm install
 
     # - name: Run tests
     #   run: npm run test:headless
 
     - name: Build
-      working-directory: /frontend
+      working-directory: ./frontend
       run: nx build
 
     - name: Deploy
