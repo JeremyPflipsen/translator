@@ -51,16 +51,16 @@ jobs:
         node-version: 14
 
     - name: Install dependencies
-      working-directory: frontent
+      working-directory: /frontend
       run: npm install
 
     # - name: Run tests
     #   run: npm run test:headless
 
     - name: Build
-      working-directory: frontent
+      working-directory: /frontend
       run: nx build
 
     - name: Deploy
       if: success()
-      run: aws s3 sync ./frontent/dist/frontend arn:aws:s3:::translate-app-frontend-1
+      run: aws s3 sync ./frontend/dist/frontend arn:aws:s3:::translate-app-frontend-1
