@@ -59,7 +59,7 @@ jobs:
 
     - name: Build
       working-directory: ./frontend
-      run: nx build
+      run: npm run build
 
     - name: Deploy
       if: success()
