@@ -63,4 +63,4 @@ jobs:
 
     - name: Deploy
       if: success()
-      run: aws s3 sync ./frontend/dist/frontend arn:aws:s3:::translate-app-frontend-1
+      run: aws s3 sync ./frontend/dist/frontend s3://translate-app-frontend-1
