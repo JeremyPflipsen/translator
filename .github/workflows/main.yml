@@ -17,18 +17,50 @@ permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
 jobs:
-  AssumeRoleAndCallIdentity:
+  # AssumeRoleAndCallIdentity:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Git clone the repository
+  #       uses: actions/checkout@v3
+  #     - name: configure aws credentials
+  #       uses: aws-actions/configure-aws-credentials@v1.7.0
+  #       with:
+  #         role-to-assume: arn:aws:iam::701806000562:role/GitHubActions-AssumeRoleWithAction #change to reflect your IAM role’s ARN
+  #         role-session-name: GitHub_to_AWS_via_FederatedOIDC
+  #         aws-region: ${{ env.AWS_REGION }}
+  #     # Hello from AWS: WhoAmI
+  #     - name: Sts GetCallerIdentity
+  #       run: |
+  #         aws sts get-caller-identity
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1.7.0
-        with:
-          role-to-assume: arn:aws:iam::701806000562:role/GitHubActions-AssumeRoleWithAction #change to reflect your IAM role’s ARN
-          role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region: ${{ env.AWS_REGION }}
-      # Hello from AWS: WhoAmI
-      - name: Sts GetCallerIdentity
-        run: |
-          aws sts get-caller-identity
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1.7.0
+      with:
+        role-to-assume: arn:aws:iam::701806000562:role/GitHubActions-AssumeRoleWithAction #change to reflect your IAM role’s ARN
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 21
+
+    - name: Install dependencies
+      working-directory: ./frontend
+      run: npm install
+
+    # - name: Run tests
+    #   run: npm run test:headless
+
+    - name: Build
+      working-directory: ./frontend
+      run: npm run build
+
+    - name: Deploy
+      if: success()
+      run: aws s3 sync ./frontend/dist/frontend s3://translate-app-frontend-1
