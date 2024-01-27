@@ -61,22 +61,18 @@ export class AppComponent {
     }
 
     //do logic here
-    const apiBaseUrl: string = "https://d2i8v3z9i5u64m.cloudfront.net"
+    const apiBaseUrl: string = "https://d2i8v3z9i5u64m.cloudfront.net/translate"
     const params: string = "?fromLanguage=" + this.selectedFirstLanguage
       + "&toLanguage=" + this.selectedSecondLanguage
       + "&textToTranslate=" + encodeURIComponent(this.firstLanguageText)
     const fullUrl = apiBaseUrl + params
-    console.log("Calling translate API at " + fullUrl)
     this.http.get(fullUrl).pipe().subscribe(data => {
-      console.log("data")
-      console.log(data)
       this.secondLanguageText = data.toString()
     })
     this.timeOfLastApiCall = now
   }
 
   swap() {
-    console.log("SWAP")
     const tempLanguageText = this.firstLanguageText
     this.firstLanguageText = this.secondLanguageText
     this.secondLanguageText = tempLanguageText
