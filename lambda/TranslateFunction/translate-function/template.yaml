@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  translate-function
+
+  Sample SAM Template for translate-function
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 128
+    LoggingConfig:
+      LogFormat: JSON
+Resources:
+  TranslateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: translate/
+      Handler: app.lambda_handler
+      Runtime: python3.11
+      Architectures:
+      - x86_64
+      Events:
+        Translate:
+          Type: Api
+          Properties:
+            Path: /translate
+            Method: get
+
+  ApplicationResourceGroup:
+    Type: AWS::ResourceGroups::Group
+    Properties:
+      Name:
+        Fn::Sub: ApplicationInsights-SAM-${AWS::StackName}
+      ResourceQuery:
+        Type: CLOUDFORMATION_STACK_1_0
+  ApplicationInsightsMonitoring:
+    Type: AWS::ApplicationInsights::Application
+    Properties:
+      ResourceGroupName:
+        Ref: ApplicationResourceGroup
+      AutoConfigurationEnabled: 'true'
+Outputs:
+  TranslateApi:
+    Description: API Gateway endpoint URL for Prod stage for Translate function
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/translate/"
+  TranslateFunction:
+    Description: Translate Lambda Function ARN
+    Value: !GetAtt TranslateFunction.Arn
+  TranslateFunctionIamRole:
+    Description: Implicit IAM Role created for Translate function
+    Value: !GetAtt TranslateFunctionRole.Arn

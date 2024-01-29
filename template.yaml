@@ -1,0 +1,126 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+# Parameters:
+
+Resources:
+  FrontendDeployBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        { "IndexDocument": "index.html", "ErrorDocument": "error.html" }
+  
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    DependsOn: FrontendDeployBucket
+    Properties:
+      DistributionConfig:
+        DefaultCacheBehavior:
+          TargetOriginId: FrontendDeployBucketOriginId
+          ViewerProtocolPolicy: allow-all
+          DefaultTTL: 86400
+          MaxTTL: 31536000
+          ForwardedValues:
+            QueryString: true
+        Enabled: true
+        DefaultRootObject: /browser/index.html
+        IPV6Enabled: true
+
+          # Compress: true
+
+        Origins:
+          - DomainName: !GetAtt FrontendDeployBucket.DomainName
+            Id: FrontendDeployBucketOriginId
+            OriginShield:
+              Enabled: true
+              OriginShieldRegion: us-east-1
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+          - DomainName: juzzzlncxnn2onelvr3cin22zm0qatmk.lambda-url.us-east-1.on.aws #FIXME replace with lambda
+            Id: TranslateFunction
+            OriginShield:
+              Enabled: true
+              OriginShieldRegion: us-east-1
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+        
+        CacheBehaviors:
+          - PathPattern: /translate
+            TargetOriginId: TranslateFunction
+            ViewerProtocolPolicy: allow-all
+            ResponseHeadersPolicyId: e61eb60c-9c35-4d20-a928-2b84e02af89c #Simple CORS AWS-Managed Policy
+            ForwardedValues:
+              QueryString: true
+
+  TranslateFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Description: Translates between languages
+      Handler: index.handler
+      Runtime: python3.11
+      Role: !GetAtt TranslateFunctionRole.Arn
+      Timeout: 120
+      Code:
+        ZipFile: |
+          def lambda_handler(event, context):
+              return {"statusCode": 200, "body": json.dumps("Hello from lambda!")}
+
+  TranslateFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        -
+          PolicyName: S3Access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              -
+                Sid: AllowLogging
+                Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "*"
+        -
+          PolicyName: AwsTranslateReadOnly
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              Effect: Allow
+              Action:
+              - translate:TranslateText
+              - translate:TranslateDocument
+              - translate:GetTerminology
+              - translate:ListTerminologies
+              - translate:ListTextTranslationJobs
+              - translate:DescribeTextTranslationJob
+              - translate:GetParallelData
+              - translate:ListParallelData
+              - comprehend:DetectDominantLanguage
+              - cloudwatch:GetMetricStatistics
+              - cloudwatch:ListMetrics
+              Resource: "*"
+
+
+
+
+          
+# Outputs:
+#   CloudFrontDistribution:
+#     Description: CloudFront distribution
+#     Value: !GetAtt CloudFrontDistribution.DomainName
+  
