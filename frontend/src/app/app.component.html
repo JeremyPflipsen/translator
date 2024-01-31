@@ -1,46 +1,4 @@
 <div class="background">
   <app-toolbar></app-toolbar>
-  <div class="flex justify-between">
-    <div class="inline-block box-border p-4 w-1/2 flex flex-col items-center justify-start">
-      <div class="inline-block w-1/2 m-8 flex justify-center items-center">
-        <mat-form-field>
-          <mat-select [(ngModel)]="selectedFirstLanguage" name="language" class="inline-block"
-            (selectionChange)="onUserInput()">
-            @for (language of languages; track language) {
-            <mat-option [value]="language.value">
-              {{language.value}}
-            </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <textarea class="p-2 box-content text-zinc-800 italic font-serif font-semibold w-full text-center"
-        [(ngModel)]="firstLanguageText" cdkTextareaAutosize (ngModelChange)="onUserInput()" cdkAutosizeMinRows="1">
-      </textarea>
-    </div>
-    <div class="flex w-1/12 justify-center">
-      <svg class="fixed w-1/12 h-1/12 pt-16" (click)="swap()" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"></path>
-      </svg>
-    </div>
-    <div class="inline-block box-border p-4 w-1/2 flex flex-col items-center justify-start">
-      <div class="inline-block w-1/2 m-8 flex justify-center items-center">
-        <mat-form-field>
-          <mat-select [(ngModel)]="selectedSecondLanguage" name="language" class="inline-block"
-            (selectionChange)="onUserInput()">
-            @for (language of languages; track language) {
-            <mat-option [value]="language.value">
-              {{language.value}}
-            </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <textarea disabled class="p-2 box-content text-zinc-800 italic font-serif font-semibold w-full text-center"
-        [(ngModel)]="secondLanguageText" cdkTextareaAutosize (ngModelChange)="onUserInput()" cdkAutosizeMinRows="1">
-      </textarea>
-    </div>
-  </div>
+  <router-outlet></router-outlet>
 </div>

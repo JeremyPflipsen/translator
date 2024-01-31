@@ -1,0 +1,26 @@
+<div class="flex flex-col justify-center items-center p-8">
+    <h2 class="georgia">Service Architecture</h2>
+    <img class="mb-8" [src]="servicesArchitectureImagePath" alt="Architecture" />
+    <p class="mb-8">
+        This simple-looking architecture utilizes serverless AWS services to scale up with very high demand to ensure a
+        great and consistent user experience,
+        and scale down with very low demand to minimize costs.
+        <br /><br />
+        We start by hosting the website's static content on s3 for reliable and flexible long-term storage.
+        When a user requests the webpage, they are first routed though cloudfront. Cloudfront is a global caching
+        service, allowing quick access from anywhere in the world.
+        Cloudfront returns the cached website, minimizing the calls to the s3 host, and drastically improving loading
+        times for users far away from the region of the s3 host.
+        <br /><br />
+        When the user types their message to translate, the backend Lambda is called. This in turn utilizes AWS's
+        Translate service, and returns the translated message.
+        Cloudfront caches this translation, saving all the processing delay and costs of calling AWS Translate again the
+        next time the user enters the same message.
+    </p>
+    <h2 class="georgia">Developer Flow</h2>
+    <img class="mb-8" [src]="developerFlowImagePath" alt="Architecture" />
+    <p>
+        Cloudformation is a powerful tool for mangaging infrastructure. We declare our services, and it manages their lifecycle.
+        When a merge request is completed, github actions builds and deploys our code and resources.
+    </p>
+</div>

@@ -3,33 +3,3 @@ background-image: linear-gradient(112.5deg, rgb(214, 214, 214) 0%, rgb(214, 214,
 /* background-image: linear-gradient(90deg, rgb(33,33,33) 0%,transparent 59%),repeating-linear-gradient(45deg, rgba(168, 168, 168,0.1) 0px, rgba(168, 168, 168,0.1) 1px,transparent 1px, transparent 13px),repeating-linear-gradient(135deg, rgba(168, 168, 168,0.1) 0px, rgba(168, 168, 168,0.1) 1px,transparent 1px, transparent 13px),linear-gradient(90deg, rgb(33,33,33),rgb(33,33,33)); */
 height:100%
 }
-.body {
-}
-
-.body-row {
-  justify-content: space-evenly;
-}
-
-.body-row-item {
-  display: inline-block;
-  width: 10%;
-  padding: 5%;
-  text-align: center;
-}
-
-textarea {
-  border: none;
-  overflow: auto;
-  outline: none;
-
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-
-  resize: none; /*remove the resize handle on the bottom right*/
-
-  background: transparent;
-
-  font-size: 5vmin;
-  line-height: 5vmin;
-}

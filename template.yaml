@@ -119,8 +119,8 @@ Resources:
 
 
           
-# Outputs:
-#   CloudFrontDistribution:
-#     Description: CloudFront distribution
-#     Value: !GetAtt CloudFrontDistribution.DomainName
+Outputs:
+  CloudFrontDistribution:
+    Description: CloudFront distribution
+    Value: !GetAtt CloudFrontDistribution.DomainName
   

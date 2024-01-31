@@ -1,0 +1,30 @@
+.body {
+}
+
+.body-row {
+  justify-content: space-evenly;
+}
+
+.body-row-item {
+  display: inline-block;
+  width: 10%;
+  padding: 5%;
+  text-align: center;
+}
+
+textarea {
+  border: none;
+  overflow: auto;
+  outline: none;
+
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+
+  resize: none; /*remove the resize handle on the bottom right*/
+
+  background: transparent;
+
+  font-size: 5vmin;
+  line-height: 5vmin;
+}
