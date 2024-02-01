@@ -71,5 +71,5 @@ jobs:
 
       # Run Unit tests- Specify unit tests here 
 
-    - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name sam-translate --s3-bucket asdf-frontenddeploybucket-zvg1rao9r1a8 --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }} 
+    - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name sam-translate --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }} 
       working-directory: ./lambda
