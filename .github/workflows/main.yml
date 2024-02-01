@@ -32,7 +32,7 @@ jobs:
   #     - name: Sts GetCallerIdentity
   #       run: |
   #         aws sts get-caller-identity
-  deploy:
+  deploy-frontend:
     runs-on: ubuntu-latest
     steps:
     - name: Configure AWS Credentials
@@ -64,3 +64,16 @@ jobs:
     - name: Deploy
       if: success()
       run: aws s3 sync ./frontend/dist/frontend s3://translate-app-frontend-1
+
+      # deploy lambda
+    - run: sam build --use-container
+      working-directory: ./lambda
+
+    - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name sam-hello-world --s3-bucket asdf-frontenddeploybucket-zvg1rao9r1a8 --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }} 
+      working-directory: ./lambda
+      
+# Run Unit tests- Specify unit tests here 
+
+# sam deploy
+    - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name sam-hello-world --s3-bucket asdf-frontenddeploybucket-zvg1rao9r1a8 --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }} 
+      
