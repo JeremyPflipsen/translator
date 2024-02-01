@@ -69,11 +69,7 @@ jobs:
     - run: sam build --use-container
       working-directory: ./lambda
 
-    - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name sam-hello-world --s3-bucket asdf-frontenddeploybucket-zvg1rao9r1a8 --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }} 
-      working-directory: ./lambda
-      
-# Run Unit tests- Specify unit tests here 
+      # Run Unit tests- Specify unit tests here 
 
-# sam deploy
-    - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name sam-hello-world --s3-bucket asdf-frontenddeploybucket-zvg1rao9r1a8 --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }} 
-      
+    - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name sam-translate --s3-bucket asdf-frontenddeploybucket-zvg1rao9r1a8 --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }} 
+      working-directory: ./lambda
