@@ -5,6 +5,7 @@ codeuri = "C:\\Users\\Jeremy\\Desktop\\Projects\\AWS\\Translation App\\translato
 runtime = "python3.11"
 architecture = "x86_64"
 handler = "app.lambda_handler"
+source_hash = "25f857c68fc03f71f680a8aa0d489b51fc10d3d5ed4127bd83b4635e1f840c9f"
 manifest_hash = "3298f13049d19cffaa37ca931dd4d421"
 packagetype = "Zip"
 functions = ["TranslateFunction"]
