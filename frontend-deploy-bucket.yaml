@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  FrontendDeployBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      WebsiteConfiguration:
+        { "IndexDocument": "index.html", "ErrorDocument": "error.html" }
+
+Outputs:
+  CloudFrontDistribution:
+    Description: FrontendDeployBucket domain name
+    Value: !GetAtt FrontendDeployBucket.DomainName
