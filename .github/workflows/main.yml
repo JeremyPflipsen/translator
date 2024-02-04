@@ -42,6 +42,10 @@ jobs:
       working-directory: ./frontend
       run: npm run build
 
+    - name: Deploy
+      if: success()
+      run: aws s3 sync ./frontend/dist/frontend s3://translate-app-frontend-1
+
   deploylambda:
     runs-on: ubuntu-latest
     steps:
@@ -54,9 +58,6 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Deploy
-      if: success()
-      run: aws s3 sync ./frontend/dist/frontend s3://translate-app-frontend-1
 
       # deploy lambda
     - run: sam build --use-container
