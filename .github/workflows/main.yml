@@ -44,7 +44,7 @@ jobs:
 
     - name: Deploy
       if: success()
-      run: aws s3 sync ./frontend/dist/frontend s3://translate-app-frontend-1
+      run: aws s3 sync ./frontend/dist/frontend s3://initialtranslatestack-frontenddeploybucket-6eokq9uobmowInfo #replace with your website hosting s3 bucket
 
   deploylambda:
     runs-on: ubuntu-latest
