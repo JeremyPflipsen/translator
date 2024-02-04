@@ -38,6 +38,52 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
         - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
 
+  TranslateFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          -
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        -
+          PolicyName: S3Access
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              -
+                Sid: AllowLogging
+                Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "*"
+        -
+          PolicyName: AwsTranslateReadOnly
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              Effect: Allow
+              Action:
+              - translate:TranslateText
+              - translate:TranslateDocument
+              - translate:GetTerminology
+              - translate:ListTerminologies
+              - translate:ListTextTranslationJobs
+              - translate:DescribeTextTranslationJob
+              - translate:GetParallelData
+              - translate:ListParallelData
+              - comprehend:DetectDominantLanguage
+              - cloudwatch:GetMetricStatistics
+              - cloudwatch:ListMetrics
+              Resource: "*"
+
 Outputs:
   FrontendDeployBucketDomainName:
     Description: FrontendDeployBucket domain name
