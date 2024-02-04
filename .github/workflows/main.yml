@@ -1,6 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-# name:Connect to an AWS role from a GitHub repository
-
 # Controls when the action will run. Invokes the workflow on push events but only for the main branch
 on:
   push:
@@ -10,14 +7,14 @@ on:
 
 env:
   
-  AWS_REGION : "us-east-1" #Change to reflect your Region
+  AWS_REGION : "us-east-1" #Chane to reflect your Region
 
 # Permission can be added at job level or workflow level    
 permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
 jobs:
-  deploy:
+  deploy-frontend:
     runs-on: ubuntu-latest
     steps:
     - name: Configure AWS Credentials
@@ -30,8 +27,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # deploy frontend
-
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -41,13 +36,24 @@ jobs:
       working-directory: ./frontend
       run: npm install
 
-    # - name: Run tests
-    #   run: npm run test:headless
+    # - name: Run tests here
 
     - name: Build
       working-directory: ./frontend
       run: npm run build
 
+  deploylambda:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1.7.0
+      with:
+        role-to-assume: arn:aws:iam::701806000562:role/InitialTranslateStack-GithubActionsRole-2y6CRDQhD0qd #change to reflect your IAM role’s ARN
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: Deploy
       if: success()
       run: aws s3 sync ./frontend/dist/frontend s3://translate-app-frontend-1
