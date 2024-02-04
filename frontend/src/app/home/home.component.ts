@@ -55,8 +55,7 @@ export class HomeComponent {
       return
     }
 
-    //do logic here
-    const apiBaseUrl: string = "https://d2i8v3z9i5u64m.cloudfront.net/translate"
+    const apiBaseUrl: string = "https://d1cijdm5ukr5tt.cloudfront.net/translate" // Replace with your cloudfront distribution url
     const params: string = "?fromLanguage=" + this.selectedFirstLanguage
       + "&toLanguage=" + this.selectedSecondLanguage
       + "&textToTranslate=" + encodeURIComponent(this.firstLanguageText)

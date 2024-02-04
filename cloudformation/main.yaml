@@ -1,5 +1,9 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
+Parameters:
+  TranslateLambdaDomainName:
+    Type: String
+
 Resources:
   FrontendDeployBucket:
     Type: AWS::S3::Bucket
@@ -12,31 +16,95 @@ Resources:
       WebsiteConfiguration:
         { "IndexDocument": "index.html", "ErrorDocument": "error.html" }
 
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        DefaultCacheBehavior:
+          TargetOriginId: FrontendDeployBucketOrigin
+          ViewerProtocolPolicy: allow-all
+          DefaultTTL: 86400
+          MaxTTL: 31536000
+          ForwardedValues:
+            QueryString: true
+          Compress: true
+          ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c #Simple CORS AWS-Managed Policy
+        Enabled: true
+        DefaultRootObject: index.html
+        IPV6Enabled: true
+        PriceClass: PriceClass_100 # Only North America and Europe, just to keep things simpler
+
+        CacheBehaviors:
+          - PathPattern: /translate
+            TargetOriginId: TranslateFunction
+            ViewerProtocolPolicy: allow-all
+            ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c #Simple CORS AWS-Managed Policy
+            ForwardedValues:
+              QueryString: true
+
+        Origins:
+          - DomainName: !GetAtt FrontendDeployBucket.DomainName
+            Id: FrontendDeployBucketOrigin
+            OriginPath: /browser
+            OriginShield:
+              Enabled: true
+              OriginShieldRegion: us-east-1
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+          - DomainName: !Ref TranslateLambdaDomainName
+            Id: TranslateFunction
+            OriginPath: /Prod/translate
+            OriginShield:
+              Enabled: true
+              OriginShieldRegion: us-east-1
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FrontendDeployBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: s3:GetObject
+            Principal:
+              Service: "cloudfront.amazonaws.com"
+            Effect: Allow
+            Resource: !Sub ${FrontendDeployBucket.Arn}/*
+            Condition:
+              StringEquals:
+                "AWS:SourceArn": !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
+
   GithubActionsRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
-        "Statement": [
+        "Statement":
+          [
             {
-                "Effect": "Allow",
-                "Principal": {
-                    "Federated": "arn:aws:iam::701806000562:oidc-provider/token.actions.githubusercontent.com"
+              "Effect": "Allow",
+              "Principal":
+                {
+                  "Federated": "arn:aws:iam::701806000562:oidc-provider/token.actions.githubusercontent.com",
                 },
-                "Action": "sts:AssumeRoleWithWebIdentity",
-                "Condition": {
-                    "StringEquals": {
-                        "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+              "Action": "sts:AssumeRoleWithWebIdentity",
+              "Condition":
+                {
+                  "StringEquals":
+                    {
+                      "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
                     },
-                    "StringLike": {
-                        "token.actions.githubusercontent.com:sub": "repo:JeremyPflipsen/*"
-                    }
-                }
-            }
-        ]
+                  "StringLike":
+                    {
+                      "token.actions.githubusercontent.com:sub": "repo:JeremyPflipsen/*",
+                    },
+                },
+            },
+          ]
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
-
 
   TranslateFunctionRole:
     Type: AWS::IAM::Role
@@ -45,46 +113,42 @@ Resources:
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
-          -
-            Effect: Allow
+          - Effect: Allow
             Principal:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies:
-        -
-          PolicyName: S3Access
+        - PolicyName: S3Access
           PolicyDocument:
             Version: 2012-10-17
             Statement:
-              -
-                Sid: AllowLogging
+              - Sid: AllowLogging
                 Effect: Allow
                 Action:
                   - "logs:CreateLogGroup"
                   - "logs:CreateLogStream"
                   - "logs:PutLogEvents"
                 Resource: "*"
-        -
-          PolicyName: AwsTranslateReadOnly
+        - PolicyName: AwsTranslateReadOnly
           PolicyDocument:
             Version: 2012-10-17
             Statement:
               Effect: Allow
               Action:
-              - translate:TranslateText
-              - translate:TranslateDocument
-              - translate:GetTerminology
-              - translate:ListTerminologies
-              - translate:ListTextTranslationJobs
-              - translate:DescribeTextTranslationJob
-              - translate:GetParallelData
-              - translate:ListParallelData
-              - comprehend:DetectDominantLanguage
-              - cloudwatch:GetMetricStatistics
-              - cloudwatch:ListMetrics
+                - translate:TranslateText
+                - translate:TranslateDocument
+                - translate:GetTerminology
+                - translate:ListTerminologies
+                - translate:ListTextTranslationJobs
+                - translate:DescribeTextTranslationJob
+                - translate:GetParallelData
+                - translate:ListParallelData
+                - comprehend:DetectDominantLanguage
+                - cloudwatch:GetMetricStatistics
+                - cloudwatch:ListMetrics
               Resource: "*"
 
 Outputs:
-  FrontendDeployBucketDomainName:
-    Description: FrontendDeployBucket domain name
-    Value: !GetAtt FrontendDeployBucket.DomainName
+  CloudFrontDistribution:
+    Description: CloudFront distribution
+    Value: !GetAtt CloudFrontDistribution.DomainName
