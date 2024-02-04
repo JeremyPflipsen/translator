@@ -35,9 +35,8 @@ Resources:
             }
         ]
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonS3FullAccess
-        - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
-        - arn:aws:iam::aws:policy/AWSLambda_FullAccess
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
 
   TranslateFunctionRole:
     Type: AWS::IAM::Role
