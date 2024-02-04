@@ -12,7 +12,6 @@ Resources:
       WebsiteConfiguration:
         { "IndexDocument": "index.html", "ErrorDocument": "error.html" }
 
-    # FIXME create github actions role and connection if possible
   GithubActionsRole:
     Type: AWS::IAM::Role
     Properties:

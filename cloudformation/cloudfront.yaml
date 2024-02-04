@@ -19,11 +19,10 @@ Resources:
           MaxTTL: 31536000
           ForwardedValues:
             QueryString: true
+          Compress: true
         Enabled: true
         DefaultRootObject: /browser/index.html
         IPV6Enabled: true
-
-          # Compress: true
 
         Origins:
           - DomainName: FrontendDeployBucketDomainName
@@ -33,7 +32,7 @@ Resources:
               OriginShieldRegion: us-east-1
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
-          - DomainName: juzzzlncxnn2onelvr3cin22zm0qatmk.lambda-url.us-east-1.on.aws #FIXME replace with lambda
+          - DomainName: TranslateLambdaDomainName
             Id: TranslateFunction
             OriginShield:
               Enabled: true
