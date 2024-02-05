@@ -98,7 +98,7 @@ Resources:
                     },
                   "StringLike":
                     {
-                      "token.actions.githubusercontent.com:sub": "repo:JeremyPflipsen/*",
+                      "token.actions.githubusercontent.com:sub": "repo:JeremyPflipsen/*", #Replace with your account/repository.
                     },
                 },
             },

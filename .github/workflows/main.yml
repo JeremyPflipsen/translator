@@ -20,7 +20,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1.7.0
       with:
-        role-to-assume: arn:aws:iam::701806000562:role/InitialTranslateStack-GithubActionsRole-2y6CRDQhD0qd #change to reflect your IAM role’s ARN
+        role-to-assume: arn:aws:iam::701806000562:role/TranslateAppStack-GithubActionsRole-5zND93opVAL8 #change to reflect your IAM role’s ARN
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
         aws-region: ${{ env.AWS_REGION }}
 
@@ -44,7 +44,7 @@ jobs:
 
     - name: Deploy
       if: success()
-      run: aws s3 sync ./frontend/dist/frontend s3://initialtranslatestack-frontenddeploybucket-6eokq9uobmowInfo #replace with your website hosting s3 bucket
+      run: aws s3 sync ./frontend/dist/frontend s3://translateappstack-frontenddeploybucket-kfpwnn0gyfl3 #replace with your website hosting s3 bucket
 
   deploylambda:
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1.7.0
       with:
-        role-to-assume: arn:aws:iam::701806000562:role/InitialTranslateStack-GithubActionsRole-2y6CRDQhD0qd #change to reflect your IAM role’s ARN
+        role-to-assume: arn:aws:iam::701806000562:role/TranslateAppStack-GithubActionsRole-5zND93opVAL8 #change to reflect your IAM role’s ARN
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
         aws-region: ${{ env.AWS_REGION }}
 
