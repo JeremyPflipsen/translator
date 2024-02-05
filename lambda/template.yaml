@@ -16,6 +16,9 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: translate/
+      FunctionUrlConfig:
+        AuthType: NONE
+        InvokeMode: BUFFERED
       Role: arn:aws:iam::701806000562:role/InitialTranslateStack-TranslateFunctionRole-mbBcRkWh9HnT #Change to reflect your lambda role from the main stack
       Handler: app.lambda_handler
       Runtime: python3.11
@@ -43,9 +46,9 @@ Resources:
       AutoConfigurationEnabled: true
 
 Outputs:
-  TranslateApi:
-    Description: API Gateway endpoint URL for Prod stage for Translate function
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/translate/"
+  TranslateFunctionUrl:
+    Description: Function URL for Prod stage for Translate function
+    Value: !GetAtt TranslateFunctionUrl.FunctionUrl
   TranslateFunction:
     Description: Translate Lambda Function ARN
     Value: !GetAtt TranslateFunction.Arn

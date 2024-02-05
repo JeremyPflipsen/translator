@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
-  TranslateLambdaDomainName:
+  TranslateLambdaUrl:
     Type: String
 
 Resources:
@@ -51,7 +51,7 @@ Resources:
               OriginShieldRegion: us-east-1
             CustomOriginConfig:
               OriginProtocolPolicy: https-only
-          - DomainName: !Ref TranslateLambdaDomainName
+          - DomainName: !Ref TranslateLambdaUrl
             Id: TranslateFunction
             OriginPath: /Prod/translate
             OriginShield:

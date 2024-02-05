@@ -74,6 +74,8 @@ export class HomeComponent {
     const tempSelectedLanguage = this.selectedFirstLanguage
     this.selectedFirstLanguage = this.selectedSecondLanguage
     this.selectedSecondLanguage = tempSelectedLanguage
+
+    this.callTranslateApi()
   }
 
 }
