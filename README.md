@@ -45,13 +45,8 @@ Step 1: Copy the Repo.
 * Click "Next". Then scroll down and click "Next" again until you're on the "Review" screen.
 ![Alt text](image-3.png)
 
-* Scroll down. Click the checkbox to allow the stack to create IAM resources. Then click "Submit". This will move the stack to CREATE_IN_PROGRESS. We will have to wait until it's complete.
+* Scroll down. Click the checkbox to allow the stack to create IAM resources. Then click "Submit". This will move the stack to CREATE_IN_PROGRESS. We will have to wait until it's complete. Go see some explanations at the bottom of this README while you wait.
 ![Alt text](image-4.png)
-
-While that's creating, let me tell you about Cloudformation. Cloudformation is a tool that allows us to specify "logical" resources, like an S3 bucket, and then Cloudformation will create a physical resource to match. Our main.yaml file that we uploaded is where those logial resources are specified, like the FrontendDeployBucket.
-![Alt text](image-5.png)
-
-The best feature of cloudformation is that it's *declarative*. Declarative means that we *declare* resources and Cloudformation will build them for us. It doesn't specify *how* it will make that resource. This is opposed to an *imperative* style, where we would write a list of every step needed to make this resource. This can become tedious and error-prone, since if 1 step fails then everything fails. Each is a valuable tool, but declarative is much better here.
 
 * When the stack is in a CREATE_COMPLETE state, you'll be able to see the resources it has made. Each of these is specified in the main.yaml template file we uploaded.
 ![Alt text](image-6.png)
@@ -104,19 +99,63 @@ The best feature of cloudformation is that it's *declarative*. Declarative means
 
 ### Step 5: Deploy your frontend and lambda
 * Commit and push your changes to your remote Github repository.
-* This Github Actions main.yaml workflow file is set up to automatically run when you push to your remote main branch, so it will run. As that runs, let me offer a couple explanations.
+* This Github Actions main.yaml workflow file is set up to automatically run when you push to your remote main branch, so it will run.
+* Wait until it completes. You should see 
+    * Successes from Github Actions
+    ![Alt text](image-18.png)
 
-* An explanation of IAM Roles:
+    * Two new stacks made by AWS sam.
+        * aws-sam-cli-managed-default creates an S3 bucket to hold your templates.
+        * sam-translate actually creates all the resouces associated with your lambda.
+![Alt text](image-19.png)
+
+As that runs, let me offer a couple explanations.
+
+### Step 6: Update Cloudfront to Use Lambda
+* Go back to the Cloudformation console.
+* Click on the sam-translate stack and click "Outputs".
+* Copy the TranslateFunctionUrl, but remove "https://" and the trailing "/".
+    * This is the url where your lambda is accessible.
+![alt text](image-25.png)
+* Click on TranslateAppStack.
+* Click on Update.
+* Click "Use current template" and click "Next".
+![alt text](image-21.png)
+* Replace the temporary TranslateLambdaUrl parameter with the one you just copied.
+* IMPORTANT: Make sure you remove "https://" and the trailing "/", or this will fail.
+![alt text](image-26.png)
+* Click "Next"
+* Click "Next"
+* Scroll down. Click the check box to acknowledge the stack might create IAM Resources.
+* Click submit.
+* Since cloudformation is *declarative*, we can update our stack-in place and it will changes only what is necessary. No need to rebuild everything!
+
+### Step 7: You're done!
+* Go to your Cloudfront Distribution.
+* Copy the domain name and enter it into your browser's search bar.
+* There's your website! Translate away!
+![alt text](image-27.png)
+
+<br/>
+<br/>
+<br/>
+
+### Some explanations while you're waiting for things to build
+* Cloudformation
+    * Cloudformation is a tool that allows us to specify "logical" resources, like an S3 bucket, and then Cloudformation will create a physical resource to match. Our main.yaml file that we uploaded is where those logial resources are specified, like the FrontendDeployBucket.
+![Alt text](image-5.png)
+
+    * The best feature of cloudformation is that it's *declarative*. Declarative means that we *declare* resources and Cloudformation will build them for us. It doesn't specify *how* it will make that resource. This is opposed to an *imperative* style, where we would write a list of every step needed to make this resource. This can become tedious and error-prone, since if 1 step fails then everything fails. Each is a valuable tool, but declarative is much better here.
+* IAM Roles:
     * Iam Roles are *assumed*. They give some permission to the assuming entity, in this case your Github account. When assumed, the entity is given short-term credentials(a secret). Whenever the entity tries to interact with AWS, it sends these credentials. This proves the entity is who it says it(Authentication), and AWS gives the entity the permissions of the role(Authorization).
     * A role needs 2 things:
         * Permissions Policies which say what entities who've assumed the role can do
         * A Trust Relationship which dictates which entities can assume the role.
     * In this case we're setting the trust relationship to be only your github account, and we're giving it AdministratorAccess permissions, which allows it to do everything. In practice for security, you'd want to restrict the permissions to only what Github Actions needs.
 
-* An explation of the workflow
+* The Github Actions workflow
     * There are 2 jobs in this workflow, deploy-frontend and deploylambda.
         * deploy-frontend runs a few commands but I notably:
-            * npm run build compiles the Angular application into static content, which is planced into the /dist folder. This static content is what we serve to user's browsers for them to access the website.
+            * npm run build compiles the Angular application into static content, which is planced into the /dist folder. This static content is what we serve to user's browsers for them to access the website. index.html is the entry point for this static content.
             * aws s3 sync takes that content from the /dist folder and copies it to your FrontendDeployBucket where it'll be available for Cloudfront.
         * In deploylambda we use AWS's sam which provides tools for developing and deploying lambdas. More info here: https://aws.amazon.com/serverless/sam/
-

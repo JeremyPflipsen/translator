@@ -7,14 +7,6 @@ Parameters:
 Resources:
   FrontendDeployBucket:
     Type: AWS::S3::Bucket
-    Properties:
-      PublicAccessBlockConfiguration:
-        BlockPublicAcls: false
-        BlockPublicPolicy: false
-        IgnorePublicAcls: false
-        RestrictPublicBuckets: false
-      WebsiteConfiguration:
-        { "IndexDocument": "index.html", "ErrorDocument": "error.html" }
 
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -25,8 +17,6 @@ Resources:
           ViewerProtocolPolicy: allow-all
           DefaultTTL: 86400
           MaxTTL: 31536000
-          ForwardedValues:
-            QueryString: true
           Compress: true
           ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c #Simple CORS AWS-Managed Policy
         Enabled: true
@@ -37,7 +27,7 @@ Resources:
         CacheBehaviors:
           - PathPattern: /translate
             TargetOriginId: TranslateFunction
-            ViewerProtocolPolicy: allow-all
+            ViewerProtocolPolicy: redirect-to-https
             ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c #Simple CORS AWS-Managed Policy
             ForwardedValues:
               QueryString: true
@@ -49,8 +39,9 @@ Resources:
             OriginShield:
               Enabled: true
               OriginShieldRegion: us-east-1
-            CustomOriginConfig:
-              OriginProtocolPolicy: https-only
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+            OriginAccessControlId: !GetAtt CloudFrontOriginControl.Id
           - DomainName: !Ref TranslateLambdaUrl
             Id: TranslateFunction
             OriginPath: /Prod/translate
@@ -58,7 +49,17 @@ Resources:
               Enabled: true
               OriginShieldRegion: us-east-1
             CustomOriginConfig:
-              OriginProtocolPolicy: https-only
+              OriginProtocolPolicy: redirect-to-https
+
+  CloudFrontOriginControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig: 
+        Description: OAC to give cloudfront access to FrontendDeployBucket
+        Name: CloudfrontFrontendBucketOAC
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
 
   S3BucketPolicy:
     Type: AWS::S3::BucketPolicy
