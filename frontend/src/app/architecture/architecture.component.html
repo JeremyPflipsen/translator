@@ -1,7 +1,7 @@
-<div class="flex flex-col justify-center items-center p-8">
-    <h2 class="georgia">Service Architecture</h2>
+<div class="flex flex-col justify-center items-center p-8 ">
+    <div class="georgia text-3xl">Service Architecture</div>
     <img class="mb-8" [src]="servicesArchitectureImagePath" alt="Architecture" />
-    <p class="mb-8">
+    <p>
         This simple-looking architecture utilizes serverless AWS services to scale up with very high demand to ensure a
         great and consistent user experience,
         and scale down with very low demand to minimize costs.
@@ -17,10 +17,11 @@
         Cloudfront caches this translation, saving all the processing delay and costs of calling AWS Translate again the
         next time the user enters the same message.
     </p>
-    <h2 class="georgia">Developer Flow</h2>
+    <div class="georgia text-3xl">Developer Flow</div>
     <img class="mb-8" [src]="developerFlowImagePath" alt="Architecture" />
     <p>
         Cloudformation is a powerful tool for mangaging infrastructure. We declare our services, and it manages their lifecycle.
-        When a merge request is completed, github actions builds and deploys our code and resources.
+        Developers employ SAM and Angular to speed up development.
+        When they complete merge requests, Github Actions builds and deploys our code and resources.
     </p>
 </div>

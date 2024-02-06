@@ -17,8 +17,9 @@ Resources:
           ViewerProtocolPolicy: allow-all
           DefaultTTL: 86400
           MaxTTL: 31536000
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # CachingOptimized AWS-Managed Policy
           Compress: true
-          ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c #Simple CORS AWS-Managed Policy
+          ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c # Simple CORS AWS-Managed Policy
         Enabled: true
         DefaultRootObject: index.html
         IPV6Enabled: true
@@ -28,7 +29,7 @@ Resources:
           - PathPattern: /translate
             TargetOriginId: TranslateFunction
             ViewerProtocolPolicy: redirect-to-https
-            ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c #Simple CORS AWS-Managed Policy
+            ResponseHeadersPolicyId: 60669652-455b-4ae9-85a4-c4c02393f86c # Simple CORS AWS-Managed Policy
             ForwardedValues:
               QueryString: true
 
@@ -49,7 +50,7 @@ Resources:
               Enabled: true
               OriginShieldRegion: us-east-1
             CustomOriginConfig:
-              OriginProtocolPolicy: redirect-to-https
+              OriginProtocolPolicy: https-only
 
   CloudFrontOriginControl:
     Type: AWS::CloudFront::OriginAccessControl

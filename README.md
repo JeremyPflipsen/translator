@@ -1,55 +1,62 @@
 # translator
 
-### Access here: //Fixme url
+### Access Here: https://d2iwvxlgbo3vwz.cloudfront.net/
 
 <br/>
 
 ## Description
-This project is a a translator application built with Angular, github actions, and aws.
+This project is a a serverless translator application. It uses S3 to host an angular website, Lambda and Translate for the backend, Github actions for CI/CD, AWS SAM, Cloudfront for global caching, and Cloudformation for resource provisioning.
 
 <br/>
 
-## Deploy it yourself!
+## Deploy It Yourself!
 
-Step 1: Copy the Repo.
+### Step 1: Copy the Repo.
 
 * Fork this repository to copy it to your git account.
 * Clone your copy down to your local machine.
 
 ### Step 2: Change the GithubActionsRole to your github account/repository.
 * In the project you cloned to your local machine, find the file /cloudformation/main.yaml. Find the GithubActionsRole resource and change "repo:JeremyPflipsen/\*" to your Github account like "repo:YourGithubAccount/\*".
-![Alt text](image-8.png)
+
+    ![Alt text](./readmeimages/image-8.png)
 
 ### Step 3: Deploy Cloudformation template
 
 * Go to the aws Cloudformation console at https://us-east-1.console.aws.amazon.com/cloudformation.
 
-* Ensure your region is set to us-east-1.
-    * The rest of this guide will assume you choose us-east-1.
-![Alt text](image-7.png)
+* Ensure your region is set to us-east-1. The rest of this guide will assume you choose us-east-1.
+
+    ![Alt text](./readmeimages/image-7.png)
 
 * Select "Create stack" and "With new resources(standard)"
 
 * Click "Upload a template file" and "Choose file"
-![Alt text](image.png)
+
+    ![Alt text](./readmeimages/image.png)
 
 * Upload the file /cloudformation/main.yaml in this translator project.
-![Alt text](image-1.png)
+
+    ![Alt text](./readmeimages/image-1.png)
 * Click "Next".
 
 * Specify stack details
     * The stack name helps you identify each stack in your account, so pick something unique and descriptive to this project. I'll use TranslateAppStack.
     * The parameter TranslateLambdaUrl is the url where we'll call our translate lambda. We haven't deployed this yet, so for now put in a placeholder so the stack can build. We'll fix this later on. I'll use fixme.lambda-url.us-east-1.on.aws.
-    ![Alt text](image-2.png)
+    
+        ![Alt text](./readmeimages/image-2.png)
 
 * Click "Next". Then scroll down and click "Next" again until you're on the "Review" screen.
-![Alt text](image-3.png)
+
+    ![Alt text](./readmeimages/image-3.png)
 
 * Scroll down. Click the checkbox to allow the stack to create IAM resources. Then click "Submit". This will move the stack to CREATE_IN_PROGRESS. We will have to wait until it's complete. Go see some explanations at the bottom of this README while you wait.
-![Alt text](image-4.png)
+
+    ![Alt text](./readmeimages/image-4.png)
 
 * When the stack is in a CREATE_COMPLETE state, you'll be able to see the resources it has made. Each of these is specified in the main.yaml template file we uploaded.
-![Alt text](image-6.png)
+
+    ![Alt text](./readmeimages/image-6.png)
     * CloudFrontDistribution is the Cloudfront distribution that will globally cache user requests to speed them up.
     * FrontendDeployBucket is the S3 bucket where we'll host our frontend.
     * GithubActionsRole is a IAM role that gives your Github account permissions to interact with AWS via Github Actions.
@@ -61,19 +68,23 @@ Step 1: Copy the Repo.
 * Go back your Cloudformation stack in the console.
 * Click on TranslateFunctionRole. This will take you to the IAM console displaying your Role.
 * Copy the Role's ARN(Amazon Resource Names). ARNs are a unique identifier for each resource.
-![Alt text](image-14.png)
+
+    ![Alt text](./readmeimages/image-14.png)
 * Go to the translate project and find the file /lambda/template.yaml.
 * Update the function role arn with the one you just copied.
-![Alt text](image-15.png)
+
+    ![Alt text](./readmeimages/image-15.png)
 
 #### Update CloudFrontDistribution domain name
 * Go back your Cloudformation stack in the console.
 * Click on CloudFrontDistribution. This will take you to the IAM console displaying your Role.
 * Copy the domain name.
-![Alt text](image-16.png)
+
+    ![Alt text](./readmeimages/image-16.png)
 * Go to the translate project and find the file /frontend/src/app/home/home.component.ts
 * Update the apiBaseUrl with your Cloudfront distribution's domain name that you just copied. Append path "/translate" like "your-domain-name/translate"
-![Alt text](image-17.png)
+
+    ![Alt text](./readmeimages/image-17.png)
 
 #### Update FrontendDeployBucket
 * Go back your Cloudformation stack in the console.
@@ -82,32 +93,38 @@ Step 1: Copy the Repo.
     * If you don't specify an bucket name in the Cloudformation template, Cloudformation will generate a name for you as stackName-logicalResourceName-randomString.
     * Remember that all S3 bucket names must be *globally* unique.
     * Don't copy the "Info" text. It's a bit too easy to mess this up, I would know.
-![Alt text](image-9.png)
+
+        ![Alt text](./readmeimages/image-9.png)
 * Go to the translate project and find the folder /.github/workflows/main.yaml.
 * Change the S3 bucket to the name you just copied like s3://your.bucket.name.
-![Alt text](image-10.png)
+
+    ![Alt text](./readmeimages/image-10.png)
     * This directory /.github/workflows holds all workflows you want github actions to run. You can specify the condition upon which they run, like when a Pull Request is merged into main, and what commands you'd like to run.
 
 #### Update GithubActionsRole
 * Click on the GithubActionsRole. This will take you to the IAM console displaying your Role.
 * Copy the Role's ARN.
-![Alt text](image-11.png)
+
+    ![Alt text](./readmeimages/image-11.png)
 * Go to back to the /.github/workflows/main.yaml file.
 * Paste in your role's ARN in the following 2 spots. This tells Github Actions which role to assume.
-![Alt text](image-12.png)
-![Alt text](image-13.png)
+
+    ![Alt text](./readmeimages/image-12.png)
+    ![Alt text](./readmeimages/image-13.png)
 
 ### Step 5: Deploy your frontend and lambda
 * Commit and push your changes to your remote Github repository.
 * This Github Actions main.yaml workflow file is set up to automatically run when you push to your remote main branch, so it will run.
 * Wait until it completes. You should see 
     * Successes from Github Actions
-    ![Alt text](image-18.png)
+
+        ![Alt text](./readmeimages/image-18.png)
 
     * Two new stacks made by AWS sam.
         * aws-sam-cli-managed-default creates an S3 bucket to hold your templates.
         * sam-translate actually creates all the resouces associated with your lambda.
-![Alt text](image-19.png)
+
+            ![Alt text](./readmeimages/image-19.png)
 
 As that runs, let me offer a couple explanations.
 
@@ -116,14 +133,17 @@ As that runs, let me offer a couple explanations.
 * Click on the sam-translate stack and click "Outputs".
 * Copy the TranslateFunctionUrl, but remove "https://" and the trailing "/".
     * This is the url where your lambda is accessible.
-![alt text](image-25.png)
+    
+        ![Alt text](./readmeimages/image-25.png)
 * Click on TranslateAppStack.
 * Click on Update.
 * Click "Use current template" and click "Next".
-![alt text](image-21.png)
+
+    ![Alt text](./readmeimages/image-21.png)
 * Replace the temporary TranslateLambdaUrl parameter with the one you just copied.
 * IMPORTANT: Make sure you remove "https://" and the trailing "/", or this will fail.
-![alt text](image-26.png)
+
+    ![Alt text](./readmeimages/image-26.png)
 * Click "Next"
 * Click "Next"
 * Scroll down. Click the check box to acknowledge the stack might create IAM Resources.
@@ -134,7 +154,8 @@ As that runs, let me offer a couple explanations.
 * Go to your Cloudfront Distribution.
 * Copy the domain name and enter it into your browser's search bar.
 * There's your website! Translate away!
-![alt text](image-27.png)
+
+    ![Alt text](./readmeimages/image-27.png)
 
 <br/>
 <br/>
@@ -142,8 +163,9 @@ As that runs, let me offer a couple explanations.
 
 ### Some explanations while you're waiting for things to build
 * Cloudformation
-    * Cloudformation is a tool that allows us to specify "logical" resources, like an S3 bucket, and then Cloudformation will create a physical resource to match. Our main.yaml file that we uploaded is where those logial resources are specified, like the FrontendDeployBucket.
-![Alt text](image-5.png)
+    * Cloudformation is a tool that allows us to specify "logical" resources, like an S3 bucket, and then Cloudformation will create a physical resource to match. Our main.yaml file that we uploaded is where those logial resources are specified, like the FrontendDeployBucket:
+
+        ![Alt text](./readmeimages/image-28.png)
 
     * The best feature of cloudformation is that it's *declarative*. Declarative means that we *declare* resources and Cloudformation will build them for us. It doesn't specify *how* it will make that resource. This is opposed to an *imperative* style, where we would write a list of every step needed to make this resource. This can become tedious and error-prone, since if 1 step fails then everything fails. Each is a valuable tool, but declarative is much better here.
 * IAM Roles:
@@ -159,3 +181,14 @@ As that runs, let me offer a couple explanations.
             * npm run build compiles the Angular application into static content, which is planced into the /dist folder. This static content is what we serve to user's browsers for them to access the website. index.html is the entry point for this static content.
             * aws s3 sync takes that content from the /dist folder and copies it to your FrontendDeployBucket where it'll be available for Cloudfront.
         * In deploylambda we use AWS's sam which provides tools for developing and deploying lambdas. More info here: https://aws.amazon.com/serverless/sam/
+
+
+## Resources
+
+1. Using GitHub Actions to deploy serverless applications: https://aws.amazon.com/blogs/compute/using-github-actions-to-deploy-serverless-applications/
+2. Using Amazon CloudFront with AWS Lambda as origin to accelerate your web applications: https://aws.amazon.com/blogs/networking-and-content-delivery/using-amazon-cloudfront-with-aws-lambda-as-origin-to-accelerate-your-web-applications/
+3. AWS Cloudformation User Guide: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloudfront-distribution.html
+4. Step-by-Step Guide: Hosting Your Angular Application on AWS S3: https://aws.plainenglish.io/step-by-step-guide-hosting-your-angular-application-on-aws-s3-673414dd00ef
+5. Adrian Cantrill AWS Courses: https://learn.cantrill.io/
+6. Tailwind CSS: https://tailwindcss.com/
+7. Angular Material: https://material.angular.io/
