@@ -1,4 +1,4 @@
-# translator
+# Translator
 
 ### Access Here: https://d2iwvxlgbo3vwz.cloudfront.net/
 
