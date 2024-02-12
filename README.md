@@ -7,7 +7,10 @@
 ## Description
 This project is a a serverless translator application. It uses S3 to host an angular website, Lambda and Translate for the backend, Github actions for CI/CD, AWS SAM, Cloudfront for global caching, and Cloudformation for resource provisioning.
 
-<br/>
+## Architecture
+![alt text](readmeimages/services-architecture.svg)
+## Developer Flow
+![alt text](readmeimages/developer-flow.svg)
 
 ## Deploy It Yourself!
 
