@@ -52,7 +52,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1.7.0
       with:
-        role-to-assume: arn:aws:iam::701806000562:role/TranslateStack-GithubActionsRole-JG2VqyaGGMIC #change to reflect your IAM role’s ARN
+        role-to-assume: arn:aws:iam::701806000562:role/TranslateStack-TranslateFunctionRole-8InnffHV4tyR #change to reflect your IAM role’s ARN
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
         aws-region: ${{ env.AWS_REGION }}
 
