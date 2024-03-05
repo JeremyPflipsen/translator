@@ -1,6 +1,6 @@
 # Translator
 
-### Access Here: https://d2iwvxlgbo3vwz.cloudfront.net/
+### Access Here: https://d191rgactftfwo.cloudfront.net
 
 <br/>
 
