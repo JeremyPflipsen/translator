@@ -19,7 +19,7 @@ Resources:
       FunctionUrlConfig:
         AuthType: NONE
         InvokeMode: BUFFERED
-      Role: arn:aws:iam::701806000562:role/TranslateAppStack-TranslateFunctionRole-LFVtS7HEu0SN #Change to reflect your lambda role from the main stack
+      Role: arn:aws:iam::701806000562:role/TranslateStack-GithubActionsRole-JG2VqyaGGMIC #Change to reflect your lambda role from the main stack
       Handler: app.lambda_handler
       Runtime: python3.11
       Architectures:
